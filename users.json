@@ -1,1 +1,10 @@
-[]
+[
+    {
+        "username": "gdgf23",
+        "password": "scrypt:32768:8:1$nmo3auzAnUw773GJ$d3a7b17b1482282d361b826c33db7f52e1f7fd432d5ff2b9670b694388c05a9fbc54cc6c5fcde26afef47b76bd3c8905163c2445f471ac38b5845e1ea6a6654c"
+    },
+    {
+        "username": "gdgf",
+        "password": "scrypt:32768:8:1$WsSe8tX5X14mp1c3$cc58d3944e04132e06cc5c45f5e7c3493a227cc7cff537eec15acd1a5903ccca5a1aa9cdf7a595910e3eb65646c28522838eb88c51bda7a33371472ceb4eac69"
+    }
+]

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Математика</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6fb;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .username {
+            font-weight: bold;
+        }
+
+        .logout {
+            text-decoration: none;
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 17px;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .logout:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        main {
+            width: 100%;
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            color: #4f46e5;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #777;
+            font-size: 16px;
+        }
+
+        .info-box {
+            background: #f5f3ff;
+            border-left: 4px solid #4f46e5;
+            border-radius: 10px;
+            padding: 15px 18px;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .homework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+        }
+
+        .homework-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .homework-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(79, 70, 229, 0.15);
+            border-color: #ddd9ff;
+        }
+
+        .homework-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+            background: #eef0f7;
+        }
+
+        .card-content {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .card-content h2 {
+            color: #2f2b6b;
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: rgb(97, 68, 68);
+            line-height: 1.5;
+            min-height: 70px;
+        }
+
+        .deadline {
+            margin-top: 18px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            color: #555;
+        }
+
+        .deadline strong {
+            color: #752335;
+        }
+
+        .card-actions {
+            padding: 0 20px 20px 20px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #4338ca;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 45px 20px;
+            color: #777;
+        }
+
+        .empty h2 {
+            color: #4f46e5;
+            margin-bottom: 8px;
+        }
+
+        .back-area {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-button {
+            display: inline-block;
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            background: #4f46e5;
+            color: white;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .back-button:hover {
+            background: #4338ca;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 15px;
+            color: #2f2b6b;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .form-group textarea, 
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .modal-submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .modal-submit-btn:hover {
+            background-color: #059669;
+        }
+
+        #responseMessage {
+            margin-top: 12px;
+            font-size: 14px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 15px 20px;
+            }
+            .logo {
+                font-size: 19px;
+            }
+            .user-area {
+                gap: 8px;
+            }
+            .username {
+                display: none;
+            }
+            main {
+                margin: 25px auto;
+                padding: 0 15px;
+            }
+            .page-card {
+                padding: 22px 18px;
+                border-radius: 16px;
+            }
+            .page-header h1 {
+                font-size: 27px;
+            }
+            .homework-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        Учебный портал
+    </div>
+    <div class="user-area">
+        <span class="username">
+            {{ username }}
+        </span>
+        <a href="{{ url_for('logout') }}" class="logout">
+            Выйти
+        </a>
+    </div>
+</header>
+
+<main>
+    <div class="page-card">
+        <section class="page-header">
+            <h1>Математика</h1>
+            <p>Домашние задания по математике</p>
+        </section>
+
+        <div class="info-box">
+            Здесь находятся ваши задания по математике. Выполняйте их внимательно и следите за сроками сдачи.
+        </div>
+
+        {% if homework %}
+        <section class="homework-grid">
+            {% for item in homework %}
+            <article class="homework-card">
+                <div>
+                    <img src="{{ url_for('static', filename='images/' + item.image) }}" alt="{{ item.title }}" class="homework-image">
+                    <div class="card-content">
+                        <h2>{{ item.title }}</h2>
+                        <p class="description">{{ item.description }}</p>
+                        <div class="deadline">
+                            Срок: <strong>{{ item.deadline }}</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="submit-btn" onclick="openModal('{{ item.title }}')">
+                        Сдать задание
+                    </button>
+                </div>
+            </article>
+            {% endfor %}
+        </section>
+        {% else %}
+        <div class="empty">
+            <h2>Заданий пока нет</h2>
+            <p>Новые домашние задания появятся здесь позже.</p>
+        </div>
+        {% endif %}
+
+        <div class="back-area">
+            <a href="{{ url_for('dashboard') }}" class="back-button">
+                ← Вернуться в кабинет
+            </a>
+        </div>
+    </div>
+</main>
+<div id="homeworkModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <h3 id="modalTitle">Сдача задания</h3>
+        
+        <form id="homeworkForm">
+            <div class="form-group">
+                <label for="homework_text">Текст решения / ответ:</label>
+                <textarea id="homework_text" name="homework_text" placeholder="Введите ваш ответ или решение уравнения..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="homework_file">Прикрепить файл (фото/документ):</label>
+                <input type="file" id="homework_file" name="homework_file">
+            </div>
+
+            <button type="submit" class="modal-submit-btn">Отправить работу</button>
+            <div id="responseMessage"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('homeworkModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const responseMessage = document.getElementById('responseMessage');
+
+    function openModal(title) {
+        modalTitle.textContent = "Сдача задания: " + title;
+        modal.style.display = 'flex';
+        responseMessage.textContent = '';
+        document.getElementById('homeworkForm').reset();
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+
+    document.getElementById('homeworkForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        responseMessage.style.color = '#555';
+        responseMessage.textContent = 'Отправка на сервер...';
+
+        try {
+            const response = await fetch('/submit_homework', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                responseMessage.style.color = '#10b981';
+                responseMessage.textContent = result.message;
+                setTimeout(() => {
+                    closeModal();
+                }, 1500);
+            } else {
+                responseMessage.style.color = '#ef4444';
+                responseMessage.textContent = result.message || 'Ошибка отправки';
+            }
+        } catch (error) {
+            responseMessage.style.color = '#ef4444';
+            responseMessage.textContent = 'Ошибка соединения с сервером';
+        }
+    });
+</script>
+
+</body>
+</html>

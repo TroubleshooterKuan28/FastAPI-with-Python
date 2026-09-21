@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Домашние задания</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .username {
+            font-weight: bold;
+        }
+
+        .logout {
+            text-decoration: none;
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 9px 16px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .logout:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 35px;
+        }
+
+        .welcome h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #777;
+            font-size: 17px;
+        }
+
+        .homework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .homework-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .homework-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .homework-image {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            background: #e5e7eb;
+        }  
+        .homework-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .homework-link .homework-card {
+            cursor: pointer;
+        }
+ 
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h2 {
+            margin-bottom: 10px;
+            color: #4f46e5;
+        }
+
+        .description {
+            color: #666;
+            line-height: 1.5;
+            min-height: 70px;
+        }
+
+        .deadline {
+            margin-top: 18px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            color: #555;
+        }
+
+        .deadline strong {
+            color: #752335;
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 15px 20px;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .user-area {
+                gap: 10px;
+            }
+
+            .username {
+                display: none;
+            }
+
+            .welcome h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Учебный портал
+    </div>
+
+    <div class="user-area">
+
+        <span class="username">
+            {{ username }}
+        </span>
+    
+        <a href="{{ url_for('logout') }}" class="logout">
+            Выйти
+        </a>
+    
+    </div>
+    
+
+</header>
+
+<main>
+
+    <section class="welcome">
+
+        <h1>
+            Добро пожаловать, {{ username }}!
+        </h1>
+
+        <p>
+            Здесь находятся ваши домашние задания.
+        </p>
+
+    </section>
+
+    <section class="homework-grid">
+
+        {% for item in homework %}
+    
+            {% if item.title == "Математика" %}
+    
+            <a href="{{ url_for('maths') }}" class="homework-link">
+    
+                <article class="homework-card">
+    
+                    <img
+                        src="{{ url_for('static', filename='images/' + item.image) }}"
+                        alt="{{ item.title }}"
+                        class="homework-image"
+                    >
+    
+                    <div class="card-content">
+    
+                        <h2>
+                            {{ item.title }}
+                        </h2>
+    
+                        <p class="description">
+                            {{ item.description }}
+                        </p>
+    
+                        <div class="deadline">
+                            Срок: <strong>{{ item.deadline }}</strong>
+                        </div>
+    
+                    </div>
+    
+                </article>
+    
+            </a>
+    
+            {% else %}
+    
+            <article class="homework-card">
+    
+                <img
+                    src="{{ url_for('static', filename='images/' + item.image) }}"
+                    alt="{{ item.title }}"
+                    class="homework-image"
+                >
+    
+                <div class="card-content">
+    
+                    <h2>
+                        {{ item.title }}
+                    </h2>
+    
+                    <p class="description">
+                        {{ item.description }}
+                    </p>
+    
+                    <div class="deadline">
+                        Срок: <strong>{{ item.deadline }}</strong>
+                    </div>
+    
+                </div>
+    
+            </article>
+    
+            {% endif %}
+    
+        {% endfor %}
+    
+    </section>
+    

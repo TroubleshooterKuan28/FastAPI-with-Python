@@ -14,6 +14,35 @@ app.secret_key = "change_this_secret_key"
 
 USERS_FILE = "users.json"
 
+
+homework = [
+    {
+        "title": "Математика",
+        "description": "Решить задания по теме квадратных уравнений.",
+        "deadline": "18 сентября",
+        "image": "math.jpg"
+    },
+    {
+        "title": "Информатика",
+        "description": "Создать Flask-приложение с авторизацией.",
+        "deadline": "20 сентября",
+        "image": "informatics.jpg"
+    },
+    {
+        "title": "Русский язык",
+        "description": "Выполнить упражнения по заданной теме.",
+        "deadline": "21 сентября",
+        "image": "russian.jpg"
+    },
+    {
+        "title": "Английский язык",
+        "description": "Выучить новые слова и выполнить упражнения.",
+        "deadline": "22 сентября",
+        "image": "english.jpg"
+    }
+]
+
+
 def load_users():
     if not os.path.exists(USERS_FILE):
         return []
@@ -31,6 +60,7 @@ def save_users(users):
             indent=4
         )
 
+
 @app.route("/")
 def home():
 
@@ -38,6 +68,7 @@ def home():
         return redirect(url_for("dashboard"))
 
     return render_template("index.html")
+
 
 @app.route("/register", methods=["POST"])
 def register():
@@ -90,6 +121,7 @@ def register():
         "message": "Аккаунт успешно создан"
     }), 201
 
+
 @app.route("/login", methods=["POST"])
 def login():
 
@@ -123,43 +155,12 @@ def login():
         "message": "Неверный логин или пароль"
     }), 401
 
+
 @app.route("/dashboard")
 def dashboard():
 
     if "username" not in session:
         return redirect(url_for("home"))
-
-    homework = [
-
-        {
-            "title": "Математика",
-            "description": "Решить задания по теме квадратных уравнений.",
-            "deadline": "18 сентября",
-            "image": "math.jpg"
-        },
-
-        {
-            "title": "Информатика",
-            "description": "Создать Flask-приложение с авторизацией.",
-            "deadline": "20 сентября",
-            "image": "informatics.jpg"
-        },
-
-        {
-            "title": "Русский язык",
-            "description": "Выполнить упражнения по заданной теме.",
-            "deadline": "21 сентября",
-            "image": "russian.jpg"
-        },
-
-        {
-            "title": "Английский язык",
-            "description": "Выучить новые слова и выполнить упражнения.",
-            "deadline": "22 сентября",
-            "image": "english.jpg"
-        }
-
-    ]
 
     return render_template(
         "dashboard.html",
@@ -167,12 +168,57 @@ def dashboard():
         homework=homework
     )
 
+
+@app.route("/maths")
+def maths():
+
+    if "username" not in session:
+        return redirect(url_for("home"))
+
+    math_homework = [
+        item for item in homework
+        if item["title"] == "Математика"
+    ]
+
+    return render_template(
+        "maths.html",
+        username=session["username"],
+        homework=math_homework
+    )
+
+
 @app.route("/logout")
 def logout():
 
     session.pop("username", None)
 
     return redirect(url_for("home"))
+
+@app.route("/submit_homework", methods=["POST"])
+def submit_homework():
+    if "username" not in session:
+        return jsonify({
+            "success": False,
+            "message": "Необходима авторизация"
+        }), 401
+
+    homework_text = request.form.get("homework_text", "").strip()
+    file = request.files.get("homework_file")
+
+    if not homework_text and not file:
+        return jsonify({
+            "success": False,
+            "message": "Заполните текст решения или прикрепите файл"
+        }), 400
+
+    print(f"Пользователь: {session['username']} сдал Домашняя работу, Текст: {homework_text}")
+    if file:
+        print(f"Прикрепленный файл: {file.filename}")
+
+        return jsonify({
+            "success": True,
+            "message": "Домашняя работа успешно оправлена"
+        }), 200
 
 if __name__ == "__main__":
 
